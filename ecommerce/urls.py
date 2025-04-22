@@ -23,5 +23,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('mcp.urls')),  
     path('ui/', include('ui.urls')),
-    path('ai-assistant/', include('ai_assistant.urls')),
+    path('ai_assistant/', include('ai_assistant.urls')),
 ]
