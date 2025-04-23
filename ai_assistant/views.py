@@ -6,7 +6,7 @@ from django.http import JsonResponse
 from django.shortcuts import render
 import json
 import uuid
-from api import call_deepseek_api
+from .api import call_deepseek_api
 
 def assistant_home(request):
     """View for rendering the AI assistant chat interface."""
@@ -28,7 +28,7 @@ def generate_response(request):
             response = {
                 'id': str(uuid.uuid4()),
                 'role': 'assistant',
-                'content': f"This is a demo response to: {ai_assistant_response}",
+                'content': f"{ai_assistant_response}",
                 'parts': []
             }
             

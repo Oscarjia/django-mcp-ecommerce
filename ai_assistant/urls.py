@@ -7,6 +7,4 @@ urlpatterns = [
     path('', views.assistant_home, name='home'),
     path('chat/', views.chat, name='chat'),
     path('generate/', views.generate_response, name='generate'),
-
-   
 ]

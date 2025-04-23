@@ -1,8 +1,14 @@
 from openai import OpenAI
 from dotenv import load_dotenv
 import os
+# Load environment variables from .env file
+load_dotenv()
 # for backward compatibility, you can still use `https://api.deepseek.com/v1` as `base_url`.
 api_key=os.getenv("DEEPSEEK_API_KEY")
+# Check if the API key is set
+if api_key is None:
+    raise ValueError("API key not found. Please set the DEEPSEEK_API_KEY environment variable.")
+
 client = OpenAI(api_key=api_key, base_url="https://api.deepseek.com")
 
 def call_deepseek_api(user_input):
