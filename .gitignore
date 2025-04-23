@@ -79,4 +79,4 @@ yarn-error.log
 # exclude migrations
 ui/migrations
 mcp/migrations
-ai_assistan/migrations
+ai_assistant/migrations

@@ -6,10 +6,12 @@ from django.http import JsonResponse
 from django.shortcuts import render
 import json
 import uuid
+from api import call_deepseek_api
 
 def assistant_home(request):
     """View for rendering the AI assistant chat interface."""
     return render(request, 'chat_window.html')
+
 
 def generate_response(request):
     """API endpoint to generate AI responses."""
@@ -22,10 +24,11 @@ def generate_response(request):
             # In production, you would connect to an actual LLM API
             last_message = messages[-1]['content'] if messages else ""
             
+            ai_assistant_response=call_deepseek_api(last_message)
             response = {
                 'id': str(uuid.uuid4()),
                 'role': 'assistant',
-                'content': f"This is a demo response to: {last_message}",
+                'content': f"This is a demo response to: {ai_assistant_response}",
                 'parts': []
             }
             
