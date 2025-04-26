@@ -18,13 +18,27 @@ def generate_response(request):
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
+            print(f"Received data: {data}")
             messages = data.get('messages', [])
             
-            # For demo purposes, just echo back the last message
-            # In production, you would connect to an actual LLM API
-            last_message = messages[-1]['content'] if messages else ""
+            # Format messages for the API
+            formatted_messages = []
+            for message in messages:
+                formatted_messages.append({
+                    'role': message['role'],
+                    'content': message['content']
+                })
+            # Add system message if not present
+            if not any(msg['role'] == 'system' for msg in formatted_messages):
+                formatted_messages.insert(0, {
+                    'role': 'system',
+                    'content': "You are a helpful assistant that provides information about my guitar e-commercial products."
+                })
             
-            ai_assistant_response=call_deepseek_api(last_message)
+
+            print(f"Formatted messages: {formatted_messages}")
+            
+            ai_assistant_response=call_deepseek_api(formatted_messages)
             response = {
                 'id': str(uuid.uuid4()),
                 'role': 'assistant',

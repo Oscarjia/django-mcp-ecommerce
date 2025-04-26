@@ -2,6 +2,8 @@
 
 This is a Django implementation of a Model Context Protocol (MCP) for an e-commerce application.
 
+Django E-Commercial Model Context Protocol (MCP) Playground Welcome to the MCP Playground – where your Django app becomes best friends with your LLM. It’s an open protocol that lets your large language model tap into real-time data and external tools like it’s been doing it all its life.g
+
 ## Setup
 
 1. Create and activate a virtual environment:
