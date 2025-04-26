@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from .models import Product
+from ui.models import Product
 from .serializers import ProductSerializer
 
 # Create your views here.

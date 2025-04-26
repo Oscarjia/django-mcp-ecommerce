@@ -1,6 +1,7 @@
 from openai import OpenAI
 from dotenv import load_dotenv
 import os
+import json
 from .tools import AvailableTools,Tools
 # Load environment variables from .env file
 load_dotenv()
@@ -52,21 +53,38 @@ def call_deepseek_api(messages):
         stream=False
     )
     # Process the response
-    response_message = response.content
-    print(f"LLM Response message: {response_message}")
+    choice = response.choices[0]
+    assistant_message = choice.message
+   
+    print(f"LLM Response message: {assistant_message}")
     # Check if the response contains tool calls 
-    if hasattr(response_message, "tool_calls") and response_message.tool_calls:
+    if hasattr(assistant_message, "tool_calls") and assistant_message.tool_calls:
+        # If there are tool calls, we need to process them
+        messages.append({
+            "role": "assistant",
+            "tool_calls": assistant_message.tool_calls
+        })
         # Iterate through the tool calls
         # and call the appropriate tool function
         # Append the assistant's response to the tool call
-        for tool_call in response_message.tool_calls:
-            tool_name = tool_call.name
-            tool_args = tool_call.arguments
+        # Example tool call
+        # ChatCompletionMessage(content='', refusal=None, role='assistant', annotations=None, audio=None, function_call=None, tool_calls=[ChatCompletionMessageToolCall(id='call_0_c8c96c4a-f678-48ab-9425-5b6761aedeb7', function=Function(arguments='{}', name='recommend_products'), type='function', index=0)])
+        for tool_call in assistant_message.tool_calls:
+            tool_name = tool_call.function.name
+            # 1) Get the raw JSON string
+            tool_args = tool_call.function.arguments or "{}"
+            print(f"Tool name and args: {tool_name}, {tool_args}")
+            # 2) Convert it to a dict
+            try:
+                    tool_args = json.loads(tool_args)
+            except json.JSONDecodeError:
+                    raise ValueError(f"Invalid JSON arguments: {tool_args}")
             # Call the appropriate tool function
             if tool_name in AvailableTools:
                 tool_function = getattr(Tools, tool_name, None)
                 if tool_function:
                     tool_response = tool_function(**tool_args)
+                    print(f"Tool response: {tool_response}")
                     # Append the tool response to the assistant's message
                     # Update the tool call with the tool response
                     messages.append(
@@ -76,8 +94,8 @@ def call_deepseek_api(messages):
                         "name": tool_name,
                         "content": tool_response
                         }
-                    )  
-    
+                    ) 
+        print(f"Messages after tool call: {messages}") 
         #Make a new API call with the tool response
         second_response = client.chat.completions.create(
             model="deepseek-chat",
@@ -92,4 +110,4 @@ def call_deepseek_api(messages):
         print(f"Second LLM Response message: {second_response}")
         return second_response.choices[0].message.content
     # If no tool calls, return the assistant's response
-    return response_message.choices[0].message.content
+    return assistant_message.content

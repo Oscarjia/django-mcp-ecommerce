@@ -1,6 +1,6 @@
 import json
 from django.core.serializers.json import DjangoJSONEncoder
-from mcp.models import Product
+from ui.models import Product
 import random
 
 class Tools:
@@ -67,7 +67,11 @@ class Tools:
         # Placeholder for recommendation logic
         id=random.randint(1, 5)
         try:
-            product = Product.objects.get(id=id)
+            product = Product.objects.order_by('?').first()
+            if not product:
+                print("No products available for recommendation.")
+                return None
+            print(f"Recommended product: {product.name}")
             return json.dumps({
                 'id': product.id,
                 'name': product.name,
@@ -75,6 +79,7 @@ class Tools:
                 'price': str(product.price),
             })
         except Product.DoesNotExist:
+            print(f"Product with ID {id} does not exist.")
             return None
         except Exception as e:
             print(f"Error retrieving product with ID {id}: {e}")
