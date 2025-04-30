@@ -86,6 +86,7 @@ class Tools:
             return None
         
 # Define avaiilable tools with their descriptions and parameters
+# AvailableTools={}
 AvailableTools = {
         "get_products": {
             "description": "Get all products",

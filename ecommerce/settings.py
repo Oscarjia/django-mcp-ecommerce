@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
-    'mcp',
+    'mcp_order_server',
     'ui',
     'ai_assistant'
 ]

@@ -42,15 +42,21 @@ def call_deepseek_api(messages):
             })
     print(f"Tools: {tools}")
     # Add the tools to the API call
+    # Base args for the call
+    call_kwargs = {
+        "model":        "deepseek-chat",
+        "messages":     messages,
+        "tool_choice":  "auto",
+        "max_tokens":   1024,
+        "temperature":  0.7,
+        "stream":       False,
+    }
+    # Only include tools if the list isn’t empty or it will throw an error
+    if tools:
+        call_kwargs["tools"] = tools
+    # Make the API call
     response = client.chat.completions.create(
-        model="deepseek-chat",
-        messages=messages,
-        # Add the tools to the API call
-        tools=tools,
-        tool_choice="auto",
-        max_tokens=1024,
-        temperature=0.7,
-        stream=False
+        **call_kwargs
     )
     # Process the response
     choice = response.choices[0]

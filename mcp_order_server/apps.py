@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class McpConfig(AppConfig):
+class Mcp_order_serverConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'mcp'
+    name = 'mcp_order_server'

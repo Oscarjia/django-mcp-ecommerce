@@ -30,15 +30,12 @@ python manage.py createsuperuser
 
 5. Run the development server:
 ```bash
-python manage.py runserver
+python manage.py runserver 0.0.0.0:8000
 ```
 
 ## API Endpoints
 
-- `GET /api/products/` - Get all products
-- `GET /api/products/{id}/` - Get a specific product
-- `GET /api/products/get_products/` - Get all products (alternative endpoint)
-- `GET /api/products/{id}/recommend_product/` - Get product recommendations
+
 
 ## Features
 

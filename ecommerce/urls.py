@@ -21,7 +21,7 @@ from django.views.generic import RedirectView
 urlpatterns = [
     path('', RedirectView.as_view(url='ui/products/', permanent=True)),
     path('admin/', admin.site.urls),
-    path('api/', include('mcp.urls')),  
+    path('api/', include('mcp_order_server.urls')),  
     path('ui/', include('ui.urls')),
     path('ai_assistant/', include('ai_assistant.urls')),
 ]
