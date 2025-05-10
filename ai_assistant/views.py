@@ -40,10 +40,10 @@ async def generate_response(request):
 
             print(f"Formatted messages: {formatted_messages}")
             # call the deepseek api use mcp way
-            # ai_assistant_response=await call_deepseek_api_mcp_way(formatted_messages)  
+            ai_assistant_response=await call_deepseek_api_mcp_way(formatted_messages)  
             # call the deepseek api use function calling way 
-            async_call_deepseek = sync_to_async(call_deepseek_api_func_calling)
-            ai_assistant_response = await async_call_deepseek(formatted_messages)
+            # async_call_deepseek = sync_to_async(call_deepseek_api_func_calling)
+            # ai_assistant_response = await async_call_deepseek(formatted_messages)
             
             response = {
                 'id': str(uuid.uuid4()),

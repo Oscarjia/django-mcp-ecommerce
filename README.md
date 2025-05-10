@@ -14,7 +14,7 @@ source venv/bin/activate
 
 2. Install dependencies:
 ```bash
-pip install django djangorestframework django-cors-headers
+pip install -r ./requirements.txt
 ```
 
 3. Run migrations:
@@ -23,21 +23,14 @@ python manage.py makemigrations
 python manage.py migrate
 ```
 
-4. Create a superuser:
-```bash
-python manage.py createsuperuser
-```
-
-5. Run the development server:
+4. Run the development server:
 ```bash
 python manage.py runserver 0.0.0.0:8000
 ```
 
-or use 
-```bash
-uvicorn ecommerce.asgi:application
-
-```
+6. Run the MCP Server
+cd mcp_order_server
+mcp dev mcp_server.py
 
 ## API Endpoints
 
