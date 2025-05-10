@@ -33,6 +33,12 @@ python manage.py createsuperuser
 python manage.py runserver 0.0.0.0:8000
 ```
 
+or use 
+```bash
+uvicorn ecommerce.asgi:application
+
+```
+
 ## API Endpoints
 
 

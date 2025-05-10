@@ -6,14 +6,16 @@ from django.http import JsonResponse
 from django.shortcuts import render
 import json
 import uuid
-from .api import call_deepseek_api
+from asgiref.sync import async_to_sync,sync_to_async
+
+from .api import call_deepseek_api_func_calling,call_deepseek_api_mcp_way
 
 def assistant_home(request):
     """View for rendering the AI assistant chat interface."""
     return render(request, 'chat_window.html')
 
 
-def generate_response(request):
+async def generate_response(request):
     """API endpoint to generate AI responses."""
     if request.method == 'POST':
         try:
@@ -37,8 +39,12 @@ def generate_response(request):
             
 
             print(f"Formatted messages: {formatted_messages}")
+            # call the deepseek api use mcp way
+            # ai_assistant_response=await call_deepseek_api_mcp_way(formatted_messages)  
+            # call the deepseek api use function calling way 
+            async_call_deepseek = sync_to_async(call_deepseek_api_func_calling)
+            ai_assistant_response = await async_call_deepseek(formatted_messages)
             
-            ai_assistant_response=call_deepseek_api(formatted_messages)
             response = {
                 'id': str(uuid.uuid4()),
                 'role': 'assistant',
@@ -52,9 +58,12 @@ def generate_response(request):
     
     return JsonResponse({'error': 'Only POST requests are allowed'}, status=405)
 
+# Create a synchronous wrapper
+sync_run_mcp = async_to_sync(generate_response)
+
 def chat(request):
     """View for handling chat interactions."""
     if request.method == 'POST':
-        return generate_response(request)
+        return sync_run_mcp(request)
     
     return JsonResponse({'error': 'Only POST requests are allowed'}, status=405)

@@ -1,0 +1,1 @@
+Try your best to sell the guitar, and using discounts.

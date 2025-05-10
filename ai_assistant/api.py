@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 import os
 import json
 from .tools import AvailableTools,Tools
+from mcp_order_server.mcp_client import run
 # Load environment variables from .env file
 load_dotenv()
 # for backward compatibility, you can still use `https://api.deepseek.com/v1` as `base_url`.
@@ -13,9 +14,9 @@ if api_key is None:
 
 client = OpenAI(api_key=api_key, base_url="https://api.deepseek.com")
 
-def call_deepseek_api(messages):
+def call_deepseek_api_func_calling(messages):
     """
-    Call the DeepSeek API to get a response from the AI model.
+    Call the DeepSeek API function calling way(developer do everything) to get a response from the AI model.
     Supports function calling to interact with the tools defined in AvailableTools.
     """
     tools=[]
@@ -117,3 +118,14 @@ def call_deepseek_api(messages):
         return second_response.choices[0].message.content
     # If no tool calls, return the assistant's response
     return assistant_message.content
+
+
+async def  call_deepseek_api_mcp_way (messages):
+    """
+    Call the DeepSeek API mcp way to get a response from the AI model.
+    Supports function calling to interact with the tools defined in AvailableTools.
+    """
+    mcpServerResponse= await run(messages)
+    
+    # If no tool calls, return the assistant's response
+    return mcpServerResponse
